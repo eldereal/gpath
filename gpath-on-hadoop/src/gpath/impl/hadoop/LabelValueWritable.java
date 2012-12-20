@@ -14,6 +14,16 @@ public class LabelValueWritable implements Writable, Map<String, byte[]> {
 	
 	HashMap<String, byte[]> map = new HashMap<String, byte[]>();
 
+	public LabelValueWritable(){
+		
+	}
+	
+	public LabelValueWritable(LabelValueWritable labelValues) {
+		for(Map.Entry<String, byte[]> e:labelValues.entrySet()){
+			map.put(e.getKey(), e.getValue());
+		}
+	}
+
 	@Override
 	public void readFields(DataInput in) throws IOException {
 		int len = in.readInt();

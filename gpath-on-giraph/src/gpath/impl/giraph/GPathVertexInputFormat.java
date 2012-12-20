@@ -75,7 +75,7 @@ public class GPathVertexInputFormat
 				edge.setInLabelValues(e.getValue().labels);
 			}
 			GPathVertex v = new GPathVertex(bsp);
-			v.initialize(vid, cv.getLabelValues(), edges);
+			v.initialize(new IntWritableComparable(vid.get()), new LabelValueWritable(cv.getLabelValues()), edges);
 			return v;
 		}
 

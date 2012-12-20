@@ -1,5 +1,7 @@
 package gpath.impl.giraph;
 
+import gpath.util.WritableHelper;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -20,6 +22,10 @@ public class GPathMessage implements Writable {
 
 	public void setContent(byte[] content) {
 		this.content = content;
+	}
+	
+	public void setContent(Writable object){
+		this.content = WritableHelper.toBytes(object);
 	}
 
 	@Override

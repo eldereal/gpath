@@ -14,7 +14,8 @@ public class Conf {
 
 	public static final String GPATH_BSP_CLASS = "gpath.bsp.class";
 	public static final String GPATH_BSP_INSTANCE = "gpath.bsp.instance";
-
+	public static final String GPATH_STM_INSTANCE = "gpath.statemachine.instance";
+	
 	public static Configuration getDefaultConfiguration(String env){
 		Configuration conf = gpath.impl.hadoop.Conf.getDefaultConfiguration(env);
 		conf.set(GiraphConfiguration.ZOOKEEPER_LIST, "localhost:2181");
@@ -65,7 +66,7 @@ public class Conf {
 	public static void setBSPInstance(Configuration conf, GPathBSP instance)
 			throws IOException {
 		FileSystem fs = FileSystem.get(conf);
-		Path path = new Path("gpath/.bsp_" + Math.random());
+		Path path = new Path("gpath/temp/.bsp_" + Math.random());
 		conf.set(GPATH_BSP_INSTANCE, path.toString());
 		FSDataOutputStream out = null;
 		try {
