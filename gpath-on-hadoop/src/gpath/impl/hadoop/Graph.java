@@ -18,7 +18,7 @@ public class Graph implements gpath.graph.Graph {
 	
 	@Override
 	public Iterable<Path> query(String queryRegex) {
-		// TODO Auto-generated method stub
+		// TODO Graph.query
 		return null;
 	}
 

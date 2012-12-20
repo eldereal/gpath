@@ -11,6 +11,7 @@ import gpath.graph.Edge;
 import gpath.graph.LabelValue;
 import gpath.graph.Vertex;
 import gpath.util.IterableHelper;
+import gpath.util.WritableHelper;
 
 import org.apache.hadoop.io.Writable;
 
@@ -34,7 +35,11 @@ public class CompactVertexWritable implements Writable, Vertex{
 
 		@Override
 		public String getType() {
-			throw new UnsupportedOperationException();
+			if(lvs.containsKey("type")){
+				return WritableHelper.parseString(lvs.get("type"));
+			}else{
+				return null;
+			}
 		}
 
 		@Override
@@ -58,7 +63,7 @@ public class CompactVertexWritable implements Writable, Vertex{
 				}
 			});
 		}
-
+		
 		@Override
 		public byte[] getLabel(String name) {
 			return lvs.get(name);
@@ -93,7 +98,7 @@ public class CompactVertexWritable implements Writable, Vertex{
 		}		
 	};
 	
-	private static final class EdgeRepresentation implements Writable{
+	public static final class EdgeRepresentation implements Writable{
 		public int otherVertex;
 		public LabelValueWritable labels;
 		
@@ -138,9 +143,21 @@ public class CompactVertexWritable implements Writable, Vertex{
 	
 	@Override
 	public String getType() {
-		throw new UnsupportedOperationException();
+		if(lvs.containsKey("type")){
+			return WritableHelper.parseString(lvs.get("type"));
+		}else{
+			return null;
+		}
 	}
 
+	public LabelValueWritable getLabelValues(){
+		return lvs;
+	}
+	
+	public void setLabelValues(LabelValueWritable lvs){
+		this.lvs = lvs;
+	}
+	
 	@Override
 	public Iterable<LabelValue> getLabels() {
 		return IterableHelper.select(lvs.entrySet(), new IterableHelper.Map<Map.Entry<String, byte[]>, LabelValue>() {
@@ -171,6 +188,14 @@ public class CompactVertexWritable implements Writable, Vertex{
 	@Override
 	public int getLabelCount() {
 		return lvs.size();
+	}
+	
+	public Iterable<Map.Entry<Integer, EdgeRepresentation>> getOutEdgesRaw(){
+		return outEdges.entrySet();
+	}
+	
+	public Iterable<Map.Entry<Integer, EdgeRepresentation>> getInEdgesRaw(){
+		return inEdges.entrySet();
 	}
 
 	@Override
@@ -255,9 +280,23 @@ public class CompactVertexWritable implements Writable, Vertex{
 		outEdges.put(edgeId, r);
 	}
 	
+	public void addOutEdgeRaw(int otherVertex, int edgeId, LabelValueWritable lvs){
+		EdgeRepresentation r = new EdgeRepresentation();
+		r.otherVertex = otherVertex;
+		r.labels = lvs;
+		outEdges.put(edgeId, r);
+	}
+	
 	public void addInEdge(int otherVertex, int edgeId){
 		EdgeRepresentation r = new EdgeRepresentation();
 		r.otherVertex = otherVertex;
+		inEdges.put(edgeId, r);
+	}
+	
+	public void addInEdgeRaw(int otherVertex, int edgeId, LabelValueWritable lvs){
+		EdgeRepresentation r = new EdgeRepresentation();
+		r.otherVertex = otherVertex;
+		r.labels = lvs;
 		inEdges.put(edgeId, r);
 	}
 	

@@ -94,14 +94,12 @@ public class MutableGraph implements gpath.graph.MutableGraph {
 
 	@Override
 	public void deleteEntity(Entity e) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteLabel(Entity e, String name) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 }

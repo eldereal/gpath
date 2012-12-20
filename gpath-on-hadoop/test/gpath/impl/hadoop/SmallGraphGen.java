@@ -14,9 +14,7 @@ public class SmallGraphGen {
 
 	@Test
 	public void test() throws Exception {
-		Configuration conf = new Configuration();
-		conf.set("fs.default.name", "hdfs://localhost:9000");
-		conf.set("mapred.job.tracker", "localhost:9001");
+		Configuration conf = Conf.getDefaultConfiguration("1.1.1");
 		Graph g = new Graph(conf);
 		gpath.graph.MutableGraph m = g.beginModify();
 		Map<Integer, Integer> vids = new HashMap<Integer, Integer>();

@@ -107,12 +107,11 @@ public class CompactGraphMapReduce {
 		SequenceFileOutputFormat.setOutputPath(job, new Path("gpath/persist"));
 		
 		try {
-			job.waitForCompletion(true);
+			return job.waitForCompletion(false);
 		} catch (InterruptedException e) {
-			return job.isSuccessful();
+			return false;
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
-		return job.isSuccessful();
 	}
 }
