@@ -60,16 +60,16 @@ public class JarUtil {
 		return null;
 	}
 
-	public static void SetJobJar(Job job, Class<?> jobClass) {
+	public static void SetJobJar(Configuration conf, Class<?> jobClass){
 		URL u = ClassLoader.getSystemResource(toPath(jobClass.getName()));
 		if (u == null) {
 			Log.info("I cannot get class loader's URL. Assume this class is loaded in Jar");
-			setJarByClass(job.getConfiguration(), jobClass);
+			setJarByClass(conf, jobClass);
 		} else {
 			Log.info("ClassLoader URL: " + u);
 			if (u.getProtocol().equalsIgnoreCase("jar")) {
 				Log.info("Loaded from jar file, set it directly.");
-				setJarByClass(job.getConfiguration(), jobClass);
+				setJarByClass(conf, jobClass);
 			} else if (u.getProtocol().equalsIgnoreCase("file")) {
 				String base = System.getProperty("java.io.tmpdir");
 				if (!base.endsWith(File.separator)) {
@@ -92,15 +92,18 @@ public class JarUtil {
 					createJar(jobClass, u, jarname);
 				}
 				try {
-					job.getConfiguration().set("mapred.jar",
+					conf.set("mapred.jar",
 							jarfile.toURI().toURL().toString());
 				} catch (MalformedURLException e) {
-					job.getConfiguration()
-							.set("mapred.jar", jarfile.toString());
+					conf.set("mapred.jar", jarfile.toString());
 				}
 			}
 		}
-		Log.info("Job jar: " + job.getJar());
+		//Log.info("Job jar: " + job.getJar());
+	}
+	
+	public static void SetJobJar(Job job, Class<?> jobClass) {
+		SetJobJar(job.getConfiguration(), jobClass);
 	}
 
 	private static void createJar(Class<?> jobClass, URL u, String jarname) {
