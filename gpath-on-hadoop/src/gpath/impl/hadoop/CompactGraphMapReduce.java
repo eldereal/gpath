@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 public class CompactGraphMapReduce {
 
-	private static class CompactGraphMapper extends Mapper<NullWritable, LogWritable, IntWritableComparable, LogWritable>{
+	public static class CompactGraphMapper extends Mapper<NullWritable, LogWritable, IntWritableComparable, LogWritable>{
 		
 		IntWritableComparable i=new IntWritableComparable();
 		
@@ -47,7 +47,7 @@ public class CompactGraphMapReduce {
 		};
 	}
 
-	private static class CompactGraphReducer extends Reducer<IntWritableComparable, LogWritable, IntWritableComparable, CompactVertexWritable>{
+	public static class CompactGraphReducer extends Reducer<IntWritableComparable, LogWritable, IntWritableComparable, CompactVertexWritable>{
 		
 		CompactVertexWritable v = new CompactVertexWritable();
 		
